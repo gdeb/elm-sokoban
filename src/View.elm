@@ -21,6 +21,7 @@ type alias View = Context -> Model.Model -> Element
 view: Context -> Model.Model -> Element
 view context model = case model.state of
     Model.Playing -> render context model
+    Model.LevelCompleted -> levelCompleted context model
     Model.Victory -> victory context model
 
 
@@ -36,6 +37,7 @@ render context model =
                 |> Text.color Color.red
                 |> centered
                 |> container context.width 80 middle
+                |> color Color.gray
 
         currentLevel =
             drawLevel model.current
@@ -49,7 +51,7 @@ render context model =
                 , spacer 20 20
                 , makeText ("Pushes: " ++ (toString model.current.pushCounter))
                 ]
-                |> container context.width 40 middle
+                |> container context.width 40 middle |> color Color.gray
     in
         flow down
             [ title
@@ -79,6 +81,14 @@ charForm = collage width width
     , circle ((width / 2) - 6) |> filled (Color.lightBlue)
     ] |> toForm
 
+
+levelCompleted: View
+levelCompleted context model =
+    collage context.width context.height
+        [ alpha 0.4 (toForm (render context model))
+        , filled Color.white (rect 300 50)
+        , text (Text.fromString "Level Completed" |> Text.height 40)
+        ]
 
 -- helpers
 clearGrey = Color.rgba 191 191 191 0.6

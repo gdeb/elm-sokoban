@@ -17,7 +17,9 @@ updateMenu: Input -> Model.Model -> Model.Model
 updateMenu input model = model
 
 updateCompleted: Input -> Model.Model -> Model.Model
-updateCompleted input model = model
+updateCompleted input model = case input of
+    Input.None -> model
+    otherwise -> Model.moveToNextLevel model
 
 
 updatePlaying: Input -> Model.Model -> Model.Model
@@ -32,4 +34,4 @@ updatePlaying input model =
                 Input.KeyEsc -> Model.reset model
                 otherwise -> model
     in
-        if (Model.isCompleted newModel.current) then (Model.moveToNextLevel model) else newModel
+        if (Model.isCompleted newModel.current) then { newModel | state <- Model.LevelCompleted } else newModel

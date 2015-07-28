@@ -82,7 +82,7 @@ moveToNextLevel model =
         initialLevel = Array.get (model.levelNumber + 1) model.levels
     in
         case initialLevel of
-            Just l -> { model | current <- l, levelNumber <- model.levelNumber + 1 }
+            Just l -> { model | current <- l, levelNumber <- model.levelNumber + 1, state <- Playing }
             Nothing -> { model | state <- Victory }
 
 
