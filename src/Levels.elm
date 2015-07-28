@@ -29,6 +29,18 @@ levels =
             , [e, e, e, e, w, w, w, w, w, w, w]
             ]
         , makeLevel  -- level two
+            [ [w, w, w, w, w, w, w, w, w, w, w, w]
+            , [w, g, g, f, f, w, f, f, f, f, f, w, w, w]
+            , [w, g, g, f, f, w, f, b, f, f, b, f, f, w]
+            , [w, g, g, f, f, w, b, w, w, w, w, f, f, w]
+            , [w, g, g, f, f, f, f, s, f, w, w, f, f, w]
+            , [w, g, g, f, f, w, f, w, f, f, b, f, w, w]
+            , [w, w, w, w, w, w, f, w, w, b, f, b, f, w]
+            , [e, e, w, f, b, f, f, b, f, b, f, b, f, w]
+            , [e, e, w, f, f, f, f, w, f, f, f, f, f, w]
+            , [e, e, w, w, w, w, w, w, w, w, w, w, w, w]
+            ]
+        , makeLevel  -- level three
             [ [e, e, e, e, e, e, w, w, w, w, w]
             , [w, w, w, w, w, w, w, f, s, f, w]
             , [w, f, b, f, b, f, b, b, b, f, w]
