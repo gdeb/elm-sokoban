@@ -26,20 +26,36 @@ view context model = case model.state of
 
 render: View
 render context model =
-    let title =
-        Text.fromString "Sokoban"
-            |> Text.height 40
-            |> Text.color Color.red
-            |> centered
+    let
+        makeText str =
+            Text.fromString str |> Text.height 20 |> centered
+
+        title =
+            Text.fromString "Sokoban"
+                |> Text.height 40
+                |> Text.color Color.red
+                |> centered
+                |> container context.width 80 middle
+
+        currentLevel =
+            drawLevel model.current
+                |> container context.width (context.height - 120) middle
+
+        statusBar =
+            flow right
+                [ makeText ("Level: " ++ (toString (model.levelNumber + 1)))
+                , spacer 20 20
+                , makeText ("Moves: " ++ (toString model.current.moveCounter))
+                , spacer 20 20
+                , makeText ("Pushes: " ++ (toString model.current.pushCounter))
+                ]
+                |> container context.width 40 middle
     in
         flow down
             [ title
-            , (show ("Level " ++ (toString (model.levelNumber + 1))))
-            , (show ("Moves " ++ (toString model.current.moveCounter)))
-            , (show ("Pushes " ++ (toString model.current.pushCounter)))
-            , drawLevel model.current
+            , currentLevel
+            , statusBar
             ]
-        |> container context.width context.height middle
 
 
 drawTile: Model.Tile -> Form
