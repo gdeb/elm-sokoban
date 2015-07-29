@@ -3,20 +3,20 @@ module Input where
 import Keyboard
 
 
-type Input = KeyUp | KeyDown | KeyLeft | KeyRight | KeyEsc | None
+type Input = KeyUp | KeyDown | KeyLeft | KeyRight | KeyEsc
 
 
 input: Signal Input
 input =
     let
-        escSignal = Signal.map (\pressed -> if pressed then KeyEsc else None) (Keyboard.isDown 27)
-        getInput {x, y} =
-            if | y < 0 -> KeyDown
-               | y > 0 -> KeyUp
-               | x < 0 -> KeyLeft
-               | x > 0 -> KeyRight
-               | otherwise -> None
+        makeSignal keycode input = Keyboard.isDown keycode
+            |> Signal.filter identity False
+            |> Signal.map (always input)
+
+        esc = makeSignal 27 KeyEsc
+        left = makeSignal 37 KeyLeft
+        up = makeSignal 38 KeyUp
+        right = makeSignal 39 KeyRight
+        down = makeSignal 40 KeyDown
     in
-        Signal.merge
-            (Signal.map getInput Keyboard.arrows)
-            escSignal
+        Signal.mergeMany [esc, left, up, right, down]
