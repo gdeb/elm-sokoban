@@ -1,10 +1,10 @@
-module Update where
+module Update (update) where
 
-import Model
+import Model exposing (moveCharacter, Model)
 import Input exposing (Input)
 
 
-update: Input -> Model.Model -> Model.Model
+update: Input -> Model -> Model
 update input model =
     case model.state of
         Model.Menu -> updateMenu input model
@@ -13,25 +13,25 @@ update input model =
         Model.Victory -> model
 
 
-updateMenu: Input -> Model.Model -> Model.Model
+updateMenu: Input -> Model -> Model
 updateMenu input model = model
 
-updateCompleted: Input -> Model.Model -> Model.Model
+
+updateCompleted: Input -> Model -> Model
 updateCompleted input model = case input of
     Input.None -> model
     otherwise -> Model.moveToNextLevel model
 
 
-updatePlaying: Input -> Model.Model -> Model.Model
+updatePlaying: Input -> Model -> Model
 updatePlaying input model =
     let
-        newModel =
-            case input of
-                Input.KeyUp -> { model | current <- Model.moveCharacter Model.Up model.current }
-                Input.KeyDown -> { model | current <- Model.moveCharacter Model.Down model.current }
-                Input.KeyLeft -> { model | current <- Model.moveCharacter Model.Left model.current }
-                Input.KeyRight -> { model | current <- Model.moveCharacter Model.Right model.current }
-                Input.KeyEsc -> Model.reset model
-                otherwise -> model
+        newModel = case input of
+            Input.KeyUp -> { model | current <- moveCharacter Model.Up model.current }
+            Input.KeyDown -> { model | current <- moveCharacter Model.Down model.current }
+            Input.KeyLeft -> { model | current <- moveCharacter Model.Left model.current }
+            Input.KeyRight -> { model | current <- moveCharacter Model.Right model.current }
+            Input.KeyEsc -> Model.reset model
+            otherwise -> model
     in
         if (Model.isCompleted newModel.current) then { newModel | state <- Model.LevelCompleted } else newModel

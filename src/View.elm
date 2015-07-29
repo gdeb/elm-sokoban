@@ -1,4 +1,4 @@
-module View where
+module View (view, Context) where
 
 import Model
 
@@ -15,8 +15,6 @@ type alias Context =
 
 width = 30
 
-type alias View = Context -> Model.Model -> Element
-
 
 view: Context -> Model.Model -> Element
 view context model = case model.state of
@@ -25,7 +23,7 @@ view context model = case model.state of
     Model.Victory -> victory context model
 
 
-render: View
+render: Context -> Model.Model -> Element
 render context model =
     let
         makeText str =
@@ -82,7 +80,7 @@ charForm = collage width width
     ] |> toForm
 
 
-levelCompleted: View
+levelCompleted: Context -> Model.Model -> Element
 levelCompleted context model =
     collage context.width context.height
         [ alpha 0.4 (toForm (render context model))
