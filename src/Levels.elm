@@ -3,57 +3,55 @@ module Levels (levels) where
 import Model exposing (Level, Tile)
 import Dict
 
+type LevelDescription = Empty | Wall | Floor | Goal | Box | Start
+
+e = Empty
+w = Wall
+f = Floor
+g = Goal
+b = Box
+s = Start
 
 -- list of levels used in the game
 levels: List Level
 levels =
-    let
-        e = Empty
-        w = Wall
-        f = Floor
-        g = Goal
-        b = Box
-        s = Start
-    in
-        [ makeLevel  -- level one
-            [ [e, e, e, e, w, w, w, w, w]
-            , [e, e, e, e, w, f, f, f, w]
-            , [e, e, e, e, w, b, f, f, w]
-            , [e, e, w, w, w, f, f, b, w, w]
-            , [e, e, w, f, f, b, f, b, f, w]
-            , [w, w, w, f, w, f, w, w, f, w, e, e, e, w, w, w, w, w, w]
-            , [w, f, f, f, w, f, w, w, f, w, w, w, w, w, f, f, g, g, w]
-            , [w, f, b, f, f, b, f, f, f, f, f, f, f, f, f, f, g, g, w]
-            , [w, w, w, w, w, f, w, w, w, f, w, s, w, w, f, f, g, g, w]
-            , [e, e, e, e, w, f, f, f, f, f, w, w, w, w, w, w, w, w, w]
-            , [e, e, e, e, w, w, w, w, w, w, w]
-            ]
-        , makeLevel  -- level two
-            [ [w, w, w, w, w, w, w, w, w, w, w, w]
-            , [w, g, g, f, f, w, f, f, f, f, f, w, w, w]
-            , [w, g, g, f, f, w, f, b, f, f, b, f, f, w]
-            , [w, g, g, f, f, w, b, w, w, w, w, f, f, w]
-            , [w, g, g, f, f, f, f, s, f, w, w, f, f, w]
-            , [w, g, g, f, f, w, f, w, f, f, b, f, w, w]
-            , [w, w, w, w, w, w, f, w, w, b, f, b, f, w]
-            , [e, e, w, f, b, f, f, b, f, b, f, b, f, w]
-            , [e, e, w, f, f, f, f, w, f, f, f, f, f, w]
-            , [e, e, w, w, w, w, w, w, w, w, w, w, w, w]
-            ]
-        , makeLevel  -- level three
-            [ [e, e, e, e, e, e, w, w, w, w, w]
-            , [w, w, w, w, w, w, w, f, s, f, w]
-            , [w, f, b, f, b, f, b, b, b, f, w]
-            , [w, g, g, g, g, g, g, g, g, g, w]
-            , [w, b, f, b, f, b, f, b, f, f, w]
-            , [w, f, w, f, w, w, w, w, w, w, w]
-            , [w, f, f, f, w]
-            , [w, w, w, w, w]
-            ]
+    [ makeLevel  -- level one
+        [ [e, e, e, e, w, w, w, w, w]
+        , [e, e, e, e, w, f, f, f, w]
+        , [e, e, e, e, w, b, f, f, w]
+        , [e, e, w, w, w, f, f, b, w, w]
+        , [e, e, w, f, f, b, f, b, f, w]
+        , [w, w, w, f, w, f, w, w, f, w, e, e, e, w, w, w, w, w, w]
+        , [w, f, f, f, w, f, w, w, f, w, w, w, w, w, f, f, g, g, w]
+        , [w, f, b, f, f, b, f, f, f, f, f, f, f, f, f, f, g, g, w]
+        , [w, w, w, w, w, f, w, w, w, f, w, s, w, w, f, f, g, g, w]
+        , [e, e, e, e, w, f, f, f, f, f, w, w, w, w, w, w, w, w, w]
+        , [e, e, e, e, w, w, w, w, w, w, w]
         ]
+    , makeLevel  -- level two
+        [ [w, w, w, w, w, w, w, w, w, w, w, w]
+        , [w, g, g, f, f, w, f, f, f, f, f, w, w, w]
+        , [w, g, g, f, f, w, f, b, f, f, b, f, f, w]
+        , [w, g, g, f, f, w, b, w, w, w, w, f, f, w]
+        , [w, g, g, f, f, f, f, s, f, w, w, f, f, w]
+        , [w, g, g, f, f, w, f, w, f, f, b, f, w, w]
+        , [w, w, w, w, w, w, f, w, w, b, f, b, f, w]
+        , [e, e, w, f, b, f, f, b, f, b, f, b, f, w]
+        , [e, e, w, f, f, f, f, w, f, f, f, f, f, w]
+        , [e, e, w, w, w, w, w, w, w, w, w, w, w, w]
+        ]
+    , makeLevel  -- level three
+        [ [e, e, e, e, e, e, w, w, w, w, w]
+        , [w, w, w, w, w, w, w, f, s, f, w]
+        , [w, f, b, f, b, f, b, b, b, f, w]
+        , [w, g, g, g, g, g, g, g, g, g, w]
+        , [w, b, f, b, f, b, f, b, f, f, w]
+        , [w, f, w, f, w, w, w, w, w, w, w]
+        , [w, f, f, f, w]
+        , [w, w, w, w, w]
+        ]
+    ]
 
-type LevelDescription =
-    Empty | Wall | Floor | Goal | Box | Start
 
 tileKind : LevelDescription -> Tile
 tileKind descr = case descr of
