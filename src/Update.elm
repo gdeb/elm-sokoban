@@ -7,14 +7,9 @@ import Input exposing (Input)
 update: Input -> Model -> Model
 update input model =
     case model.state of
-        Model.Menu -> updateMenu input model
         Model.Playing -> updatePlaying input model
         Model.LevelCompleted -> updateCompleted input model
         Model.Victory -> model
-
-
-updateMenu: Input -> Model -> Model
-updateMenu input model = model
 
 
 updateCompleted: Input -> Model -> Model

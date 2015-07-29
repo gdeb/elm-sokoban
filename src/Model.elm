@@ -13,7 +13,7 @@ type alias Model =
 type Direction = Up | Down | Left | Right
 
 
-type GameState = Menu | Playing | LevelCompleted | Victory
+type GameState = Playing | LevelCompleted | Victory
 
 
 type alias Level =
