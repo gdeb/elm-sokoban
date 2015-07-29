@@ -27,7 +27,7 @@ render: Context -> Model.Model -> Element
 render context model =
     let
         makeText str =
-            Text.fromString str |> Text.height 20 |> centered
+            Text.fromString str |> Text.height 20 |> Text.color Color.charcoal |> centered
 
         title =
             Text.fromString "Sokoban"
@@ -37,22 +37,30 @@ render context model =
                 |> container context.width 80 middle
                 |> color Color.gray
 
+        helpMessage =
+            Text.fromString "arrows: move character, escape: reset level  "
+                |> Text.height 15
+                |> Text.color Color.charcoal
+                |> centered
+                |> container context.width 20 midRight
+
         currentLevel =
             drawLevel model.current
-                |> container context.width (context.height - 120) middle
+                |> container context.width (context.height - 140) middle
 
         statusBar =
             flow right
                 [ makeText ("Level: " ++ (toString (model.levelNumber + 1)))
-                , spacer 20 20
+                , spacer 40 20
                 , makeText ("Moves: " ++ (toString model.current.moveCounter))
-                , spacer 20 20
+                , spacer 40 20
                 , makeText ("Pushes: " ++ (toString model.current.pushCounter))
                 ]
                 |> container context.width 40 middle |> color Color.gray
     in
         flow down
             [ title
+            , helpMessage
             , currentLevel
             , statusBar
             ]
