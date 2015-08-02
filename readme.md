@@ -12,6 +12,11 @@ The goal of the game is to move all the crates on their assigned spot.  The game
 really simple, just use arrows to move your character and press escape if you need
 to reset the current level if you are stuck.
 
+Screenshot
+-----------
+
+![ScreenShot](https://raw.github.com/gdeb/elm-sokoban/master/screenshot.png)
+
 To do
 -----
 Some nice to have features.  Who knows, I might get bored and implement a few of
