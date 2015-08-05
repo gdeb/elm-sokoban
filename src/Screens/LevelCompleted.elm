@@ -24,8 +24,6 @@ update input model = (model, Just LoadNextLevel)
 -- view
 view: Context -> Model -> Element
 view context model =
-    -- show "level completed"
-
     collage context.width context.height
         [ alpha 0.4 (toForm (G.view context model))
         , filled Color.white (rect 300 50)

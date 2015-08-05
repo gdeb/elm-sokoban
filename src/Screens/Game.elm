@@ -24,6 +24,12 @@ type Request = LevelCompleted
 update: Input -> Model -> (Model, Maybe Request)
 update input model =
     let
+        isCompleted level =
+            List.all (\p -> isGoal p level) level.boxes
+
+        isGoal position level =
+            Dict.get position level.map == Just Level.Goal
+
         newModel = case input of
             Input.KeyUp -> { model | current <- Level.update Level.MoveUp model.current }
             Input.KeyDown -> { model | current <- Level.update Level.MoveDown model.current }
@@ -34,16 +40,7 @@ update input model =
         request = if (isCompleted newModel.current) then Just LevelCompleted else Nothing
     in
         (newModel, request)
-    -- in
-    --     if (Model.isCompleted newModel.current) then { newModel | state <- Model.LevelCompleted } else newModel
 
-isCompleted: Level.Model -> Bool
-isCompleted level =
-    List.all (\p -> isGoal p level) level.boxes
-
-isGoal: Level.Position -> Level.Model -> Bool
-isGoal position level =
-    Dict.get position level.map == Just Level.Goal
 
 -- view
 view: Context -> Model -> Element

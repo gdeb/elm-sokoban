@@ -7,6 +7,7 @@ type alias Context =
     , height: Int
     }
 
+
 context: Signal Context
 context =
     Signal.map (\(w, h) -> {width = w, height = h}) Window.dimensions

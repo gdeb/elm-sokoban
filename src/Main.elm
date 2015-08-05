@@ -1,28 +1,25 @@
-import Window
 import Graphics.Element exposing (Element, show)
 
 import Input exposing (input, Input)
 import Context exposing (context, Context)
-import Level
 import LevelData exposing (levels)
-
 import Screens.Game as G
 import Screens.LevelCompleted as L
 import Screens.Victory as V
 
 
-initialModel: Signal Model
-initialModel =
-    case (List.head levels) of
-        Just l ->
-            let
-                model = Playing { current = l, initial = l, levelNumber = 0 }
-            in
-                Signal.foldp update model input
-
 main: Signal Element
 main =
-    Signal.map2 view context initialModel
+    let
+        initialModel: Signal Model
+        initialModel = case (List.head levels) of
+            Just l ->
+                let
+                    model = Playing { current = l, initial = l, levelNumber = 0 }
+                in
+                    Signal.foldp update model input
+    in
+        Signal.map2 view context initialModel
 
 
 -- model
@@ -44,9 +41,10 @@ updatePlaying: Input -> G.Model -> Model
 updatePlaying input game =
     let
         (g, r) = G.update input game
-    in case r of
-        Just (G.LevelCompleted) -> LevelCompleted g
-        Nothing -> Playing g
+    in
+        case r of
+            Just (G.LevelCompleted) -> LevelCompleted g
+            Nothing -> Playing g
 
 
 updateLevelCompleted: Input -> L.Model -> Model

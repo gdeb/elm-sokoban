@@ -6,7 +6,6 @@ import Graphics.Element exposing (..)
 import Graphics.Collage exposing (..)
 
 
-
 -- model
 type alias Model =
     { map: Dict Position Tile
@@ -61,8 +60,7 @@ isEmpty p lvl =
 
 isBox: Position -> Model -> Bool
 isBox position level =
-  List.member position level.boxes
-
+    List.member position level.boxes
 
 
 -- view
