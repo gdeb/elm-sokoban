@@ -6,7 +6,7 @@ import Graphics.Element exposing (..)
 import Text
 
 import Context exposing (Context)
-import Input exposing (Input)
+import Input exposing (KeyboardInput)
 import Level
 
 
@@ -21,7 +21,7 @@ type alias Model =
 -- update
 type Request = LevelCompleted
 
-update: Input -> Model -> (Model, Maybe Request)
+update: KeyboardInput -> Model -> (Model, Maybe Request)
 update input model =
     let
         isCompleted level =
@@ -31,11 +31,11 @@ update input model =
             Dict.get position level.map == Just Level.Goal
 
         newModel = case input of
-            Input.KeyUp -> { model | current <- Level.update Level.MoveUp model.current }
-            Input.KeyDown -> { model | current <- Level.update Level.MoveDown model.current }
-            Input.KeyLeft -> { model | current <- Level.update Level.MoveLeft model.current }
-            Input.KeyRight -> { model | current <- Level.update Level.MoveRight model.current }
-            Input.KeyEsc -> { model | current <- model.initial }
+            Input.Up -> { model | current <- Level.update Level.MoveUp model.current }
+            Input.Down -> { model | current <- Level.update Level.MoveDown model.current }
+            Input.Left -> { model | current <- Level.update Level.MoveLeft model.current }
+            Input.Right -> { model | current <- Level.update Level.MoveRight model.current }
+            Input.Esc -> { model | current <- model.initial }
 
         request = if (isCompleted newModel.current) then Just LevelCompleted else Nothing
     in

@@ -2,7 +2,7 @@ module Screens.Victory where
 
 import Graphics.Element exposing (show, Element)
 
-import Input exposing (Input)
+import Input exposing (KeyboardInput)
 import Context exposing (Context)
 
 -- model
@@ -10,7 +10,7 @@ type alias Model = ()
 
 
 -- update
-update: Input -> Model -> Model
+update: KeyboardInput -> Model -> Model
 update input model = model
 
 

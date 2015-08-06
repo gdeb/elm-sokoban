@@ -1,6 +1,6 @@
 import Graphics.Element exposing (Element, show)
 
-import Input exposing (input, Input)
+import Input exposing (input, KeyboardInput)
 import Context exposing (context, Context)
 import LevelData exposing (levels)
 import Screens.Game as G
@@ -30,14 +30,14 @@ type Model
 
 
 -- update
-update: Input -> Model -> Model
+update: KeyboardInput -> Model -> Model
 update input model = case model of
     Playing game -> updatePlaying input game
     LevelCompleted game -> updateLevelCompleted input game
     Victory game -> Victory (V.update input game)
 
 
-updatePlaying: Input -> G.Model -> Model
+updatePlaying: KeyboardInput -> G.Model -> Model
 updatePlaying input game =
     let
         (g, r) = G.update input game
@@ -47,7 +47,7 @@ updatePlaying input game =
             Nothing -> Playing g
 
 
-updateLevelCompleted: Input -> L.Model -> Model
+updateLevelCompleted: KeyboardInput -> L.Model -> Model
 updateLevelCompleted input game =
     let
         (_, r) =

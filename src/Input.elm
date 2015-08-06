@@ -4,25 +4,25 @@ import Keyboard
 import Time
 
 
-type Input = KeyUp | KeyDown | KeyLeft | KeyRight | KeyEsc
+type KeyboardInput = Up | Down | Left | Right | Esc
 
 
-input: Signal Input
+input: Signal KeyboardInput
 input =
     let
         esc = Keyboard.isDown 27
             |> Signal.filter identity False
-            |> Signal.map (always KeyEsc)
+            |> Signal.map (always Esc)
     in
         Signal.mergeMany
             [ esc
-            , repeatableSignal 37 KeyLeft
-            , repeatableSignal 38 KeyUp
-            , repeatableSignal 39 KeyRight
-            , repeatableSignal 40 KeyDown
+            , repeatableSignal 37 Left
+            , repeatableSignal 38 Up
+            , repeatableSignal 39 Right
+            , repeatableSignal 40 Down
             ]
 
-repeatableSignal: Keyboard.KeyCode -> Input -> Signal Input
+repeatableSignal: Keyboard.KeyCode -> KeyboardInput -> Signal KeyboardInput
 repeatableSignal keycode input =
     let
         baseSignal =
