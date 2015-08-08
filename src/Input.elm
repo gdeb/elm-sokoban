@@ -4,7 +4,7 @@ import Keyboard
 import Time
 
 
-type KeyboardInput = Up | Down | Left | Right | Esc
+type KeyboardInput = Up | Down | Left | Right | Esc | Enter
 
 
 input: Signal KeyboardInput
@@ -13,9 +13,13 @@ input =
         esc = Keyboard.isDown 27
             |> Signal.filter identity False
             |> Signal.map (always Esc)
+        enter = Keyboard.isDown 13
+            |> Signal.filter identity False
+            |> Signal.map (always Enter)
     in
         Signal.mergeMany
             [ esc
+            , enter
             , repeatableSignal 37 Left
             , repeatableSignal 38 Up
             , repeatableSignal 39 Right
