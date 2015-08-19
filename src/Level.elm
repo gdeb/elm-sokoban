@@ -5,6 +5,9 @@ import Color
 import Graphics.Element exposing (..)
 import Graphics.Collage exposing (..)
 
+import Images.Character exposing (character)
+import Images.Box exposing (box)
+import Images.Floor exposing (floor')
 
 -- model
 type alias Model =
@@ -79,16 +82,16 @@ view level =
 
         (cx, cy) = level.character
 
-        character = [ move (getX cx, getY cy) charForm ]
+        char = [ move (getX cx, getY cy) character ]
     in
-        collage (level.width * width) (level.height * width) (List.concat [tiles, boxes, character])
+        collage (level.width * width) (level.height * width) (List.concat [tiles, boxes, char])
 
 
 
 drawTile: Tile -> Form
 drawTile tile = case tile of
     Wall -> coloredRect Color.charcoal
-    Floor -> coloredRect clearGrey
+    Floor -> floor'
     Goal -> collage width width
         [ coloredRect clearGrey
         , filled (Color.rgb 230 151 141) (circle (width / 6))
@@ -96,19 +99,6 @@ drawTile tile = case tile of
 
 
 width = 30
-
-
-box: Form
-box = collage width width
-    [ rect (width - 3) (width - 3) |> filled Color.orange
-    , rect (width - 10) (width - 10) |> filled Color.lightOrange
-    ] |> toForm
-
-charForm: Form
-charForm = collage width width
-    [ circle ((width / 2) - 3) |> filled (Color.blue)
-    , circle ((width / 2) - 6) |> filled (Color.lightBlue)
-    ] |> toForm
 
 clearGrey = Color.rgba 191 191 191 0.6
 

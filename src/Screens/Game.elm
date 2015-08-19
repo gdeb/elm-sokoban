@@ -8,7 +8,7 @@ import Text
 import Context exposing (Context)
 import Input exposing (KeyboardInput)
 import Level
-
+import Images.Title exposing (title)
 
 -- model
 type alias Model =
@@ -36,6 +36,7 @@ update input model =
             Input.Left -> { model | current <- Level.update Level.MoveLeft model.current }
             Input.Right -> { model | current <- Level.update Level.MoveRight model.current }
             Input.Esc -> { model | current <- model.initial }
+            otherwise -> model
 
         request = if (isCompleted newModel.current) then Just LevelCompleted else Nothing
     in
@@ -48,14 +49,6 @@ view context model =
     let
         makeText str =
             Text.fromString str |> Text.height 20 |> Text.color Color.charcoal |> centered
-
-        title =
-            Text.fromString "Sokoban"
-                |> Text.height 40
-                |> Text.color Color.red
-                |> centered
-                |> container context.width 80 middle
-                |> color Color.gray
 
         helpMessage =
             Text.fromString "arrows: move character, escape: reset level  "
@@ -79,7 +72,7 @@ view context model =
                 |> container context.width 40 middle |> color Color.gray
     in
         flow down
-            [ title
+            [ title context.width
             , helpMessage
             , currentLevel
             , statusBar
