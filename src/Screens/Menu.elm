@@ -11,19 +11,20 @@ import Input exposing (KeyboardInput)
 import Images.Title exposing (title)
 import Images.Box exposing (box)
 
--- model
-type Model = MainMenu MenuState | HelpMenu
-
-
-type alias MenuState = Int
-
+-- menu 
+menu: List (String, Request)
 menu =
-    [ ("Start", \m -> (m, Just Start))
-    , ("Help", \m -> (HelpMenu, Nothing))
+    [ ("Start", StartGame)
+    , ("Help", DisplayHelp)
     ]
 
+
+-- model
+type alias Model = Int
+
+
 -- update
-type Request = Start
+type Request = StartGame | DisplayHelp
 
 update: KeyboardInput -> Model -> (Model, Maybe Request)
 update input model =
@@ -31,26 +32,18 @@ update input model =
         dec s = (s - 1) % (List.length menu)
         inc s = (s + 1) % (List.length menu)
     in
-        case (model, input) of
-            (MainMenu s, Input.Down) -> (MainMenu (inc s), Nothing)
-            (MainMenu s, Input.Up) -> (MainMenu (dec s), Nothing)
-            (MainMenu s, Input.Enter) ->
-                case List.head (List.drop s menu) of
-                    Just (_, f) -> f model
-            (HelpMenu, Input.Esc) -> (MainMenu 1, Nothing)
+        case input of
+            Input.Down -> (inc model, Nothing)
+            Input.Up -> (dec model, Nothing)
+            Input.Enter ->
+                case List.head (List.drop model menu) of
+                    Just (_, request) -> (model, Just request)
             otherwise -> (model, Nothing)
 
 
 -- view
 view: Context -> Model -> Element
-view context model =
-    case model of
-        MainMenu s -> renderMainMenu context s
-        HelpMenu -> renderHelpMenu context
-
-
-renderMainMenu: Context -> Int -> Element
-renderMainMenu context index =
+view context index =
     let
         decorate i (menu', _) = renderMenuLine context menu' (i == index)
 
@@ -70,13 +63,6 @@ renderMainMenu context index =
 
             ]
 
-renderHelpMenu: Context -> Element
-renderHelpMenu context =
-    flow down
-        [ title context.width
-        , show "help menu"
-        ]
-
 
 renderMenuLine: Context -> String -> Bool -> Element
 renderMenuLine context text isActive =
@@ -89,7 +75,6 @@ renderMenuLine context text isActive =
 
         decoration =
             if isActive then
-                -- [ rect 200 50 |> filled Color.gray
                 [ move (-80, 0) box
                 , move (80, 0) box
                 ]

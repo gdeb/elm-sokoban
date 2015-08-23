@@ -7,14 +7,18 @@ import Screens.Game as G
 import Screens.LevelCompleted as L
 import Screens.Menu as M
 import Screens.Victory as V
+import Screens.Help as H
 
 
+-- main
 main: Signal Element
 main =
     let
-        initialModel: Signal Model
+        model = 
+            Menu 0 
+        
         initialModel =
-            Signal.foldp update (Menu (M.MainMenu 0)) input
+            Signal.foldp update model input
     in
         Signal.map2 view context initialModel
 
@@ -22,6 +26,7 @@ main =
 -- model
 type Model
     = Menu M.Model
+    | HelpScreen (H.Model Model)
     | Playing G.Model
     | LevelCompleted L.Model
     | Victory V.Model
@@ -35,11 +40,21 @@ update input model = case model of
             (g, r) = M.update input menu
         in
             case r of
-                Just (M.Start) ->
+                Just (M.StartGame) ->
                     case (List.head levels) of
                         Just l -> Playing { current = l, initial = l, levelNumber = 0 }
+                Just (M.DisplayHelp) ->
+                    HelpScreen (H.newModel model)
                 Nothing -> Menu g
 
+    HelpScreen model' ->
+        let
+            (g, r) = H.update input model'
+        in
+            case r of
+                Just (H.GoBack) -> H.from model'
+                Nothing -> model
+        
     Playing game -> 
         let
             (g, r) = G.update input game
@@ -49,12 +64,15 @@ update input model = case model of
                 Nothing -> Playing g
                 
     LevelCompleted game -> 
-        case (L.update input game) of
-            L.LoadNextLevel ->
-                case (loadLevel (game.levelNumber + 1)) of
-                    Just playing -> playing
-                    Nothing -> Victory ()
-            L.NoOp -> LevelCompleted game
+        let 
+            (g, r) = L.update input game
+        in
+            case r of
+                Just (L.LoadNextLevel) ->
+                    case (loadLevel (game.levelNumber + 1)) of
+                        Just playing -> playing
+                        Nothing -> Victory ()
+                Nothing -> LevelCompleted game
             
     Victory game -> Victory (V.update input game)
 
@@ -70,6 +88,7 @@ loadLevel n =
 view: Context -> Model -> Element
 view context model = case model of
     Menu menu -> M.view context menu
+    HelpScreen m -> H.view context m
     Playing game -> G.view context game
     LevelCompleted level -> L.view context level
     Victory m -> V.view context m
