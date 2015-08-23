@@ -5,7 +5,7 @@ import Context exposing (context, Context)
 import LevelData exposing (levels)
 import Screens.Game as G
 import Screens.LevelCompleted as L
-import Screens.Menu as M
+import Screens.MainMenu as M
 import Screens.Victory as V
 import Screens.Help as H
 

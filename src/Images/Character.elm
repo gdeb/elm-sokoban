@@ -3,6 +3,7 @@ module Images.Character where
 import Color
 import Graphics.Collage exposing (..)
 
+width: number
 width = 30
 
 

@@ -3,6 +3,7 @@ module Images.Box where
 import Color
 import Graphics.Collage exposing (..)
 
+width: number
 width = 30
 
 box: Form

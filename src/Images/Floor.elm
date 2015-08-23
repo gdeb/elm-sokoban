@@ -3,6 +3,7 @@ module Images.Floor where
 import Color
 import Graphics.Collage exposing (..)
 
+width: number
 width = 30
 
 floor': Form

@@ -1,7 +1,6 @@
 module Screens.Help where
 
 import Graphics.Element exposing (show, Element, flow, down)
-import Graphics.Collage exposing (collage, alpha, toForm, filled, rect, text)
 
 import Context exposing (Context)
 import Input exposing (KeyboardInput)

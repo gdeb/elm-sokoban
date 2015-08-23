@@ -99,8 +99,10 @@ drawTile tile = case tile of
         ] |> toForm
 
 
+width: number
 width = 30
 
+clearGrey: Color.Color
 clearGrey = Color.rgba 191 191 191 0.6
 
 makeTile shapes = collage (floor width) (floor width) shapes
