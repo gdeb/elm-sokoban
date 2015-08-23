@@ -30,50 +30,41 @@ type Model
 -- update
 update: KeyboardInput -> Model -> Model
 update input model = case model of
-    Menu m -> updateMenu input m
-    Playing game -> updatePlaying input game
-    LevelCompleted game -> updateLevelCompleted input game
+    Menu menu ->
+        let
+            (g, r) = M.update input menu
+        in
+            case r of
+                Just (M.Start) ->
+                    case (List.head levels) of
+                        Just l -> Playing { current = l, initial = l, levelNumber = 0 }
+                Nothing -> Menu g
+
+    Playing game -> 
+        let
+            (g, r) = G.update input game
+        in
+            case r of
+                Just (G.LevelCompleted) -> LevelCompleted g
+                Nothing -> Playing g
+                
+    LevelCompleted game -> 
+        case (L.update input game) of
+            L.LoadNextLevel ->
+                case (loadLevel (game.levelNumber + 1)) of
+                    Just playing -> playing
+                    Nothing -> Victory ()
+            L.NoOp -> LevelCompleted game
+            
     Victory game -> Victory (V.update input game)
 
-updateMenu: KeyboardInput -> M.Model -> Model
-updateMenu input game =
-    let
-        (g, r) = M.update input game
-    in
-        case r of
-            Just (M.Start) ->
-                case (List.head levels) of
-                    Just l -> Playing { current = l, initial = l, levelNumber = 0 }
-            Nothing -> Menu g
+    
+loadLevel: Int -> Maybe Model
+loadLevel n =
+    Maybe.map
+        (\l -> Playing { current = l, initial = l, levelNumber = n})
+        (List.head (List.drop n levels))
 
-
-updatePlaying: KeyboardInput -> G.Model -> Model
-updatePlaying input game =
-    let
-        (g, r) = G.update input game
-    in
-        case r of
-            Just (G.LevelCompleted) -> LevelCompleted g
-            Nothing -> Playing g
-
-
-updateLevelCompleted: KeyboardInput -> L.Model -> Model
-updateLevelCompleted input game =
-    let
-        (_, r) =
-            L.update input game
-
-        loadLevel n = case List.head (List.drop n levels) of
-            Just l -> Playing
-                { current = l
-                , initial = l
-                , levelNumber = game.levelNumber + 1
-                }
-            Nothing -> Victory ()
-    in
-        case r of
-            Just (L.LoadNextLevel) -> loadLevel (game.levelNumber + 1)
-            Nothing -> LevelCompleted game
 
 -- view
 view: Context -> Model -> Element

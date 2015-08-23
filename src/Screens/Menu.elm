@@ -7,7 +7,6 @@ import Text
 
 import Context exposing (Context)
 import Input exposing (KeyboardInput)
-import Level
 
 import Images.Title exposing (title)
 import Images.Box exposing (box)
@@ -53,20 +52,22 @@ view context model =
 renderMainMenu: Context -> Int -> Element
 renderMainMenu context index =
     let
-        decorate i (menu, _) = renderMenuLine context menu (i == index)
+        decorate i (menu', _) = renderMenuLine context menu' (i == index)
 
         decoratedMenu =
-            menu
-                |> List.indexedMap decorate
-                |> flow down
-                |> container context.width (context.height - (heightOf title')) middle
+            collage 300 200
+                [ rect 300 200 |> filled Color.lightGray
+                , menu |> List.indexedMap decorate |> flow down |> toForm
+                ]
+
 
         title' =
             title context.width
     in
         flow down
             [ title'
-            , decoratedMenu
+            , decoratedMenu |> container context.width (context.height - (heightOf title')) middle
+
             ]
 
 renderHelpMenu: Context -> Element
@@ -88,8 +89,8 @@ renderMenuLine context text isActive =
 
         decoration =
             if isActive then
-                [ rect 200 50 |> filled Color.gray
-                , move (-80, 0) box
+                -- [ rect 200 50 |> filled Color.gray
+                [ move (-80, 0) box
                 , move (80, 0) box
                 ]
             else

@@ -26,6 +26,7 @@ type Tile = Wall | Floor | Goal
 
 type alias Position = (Int, Int)
 
+
 -- update
 type Action = MoveLeft | MoveRight | MoveUp | MoveDown
 

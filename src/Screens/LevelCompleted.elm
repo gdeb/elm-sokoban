@@ -26,6 +26,7 @@ view: Context -> Model -> Element
 view context model =
     collage context.width context.height
         [ alpha 0.3 (toForm (G.view context model))
-        -- , filled Color.white (rect 300 50)
+        , filled Color.gray (rect 324 74)
+        , filled Color.white (rect 320 70)
         , text (Text.fromString "Level Completed" |> Text.height 40)
         ]
